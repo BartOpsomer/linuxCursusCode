@@ -1,0 +1,42 @@
+/*
+ * gpioStruct.h
+ *
+ *  Created on: Dec 9, 2015
+ *      Author: student
+ */
+
+#ifndef GPIOSTRUCT_H_
+#define GPIOSTRUCT_H_
+
+#include <stdio.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <stdlib.h>
+#include <unistd.h>
+
+
+typedef enum {
+	pinDir_unknown = 0,
+	pinDir_in = 1,
+	pinDir_out=2
+} pinDirection_e;
+
+typedef enum {
+	pinStatus_unknown = 0,
+	pinStatus_notInitialised = 1,
+	pinStatus_initialised = 2
+} pinStatus_e;
+
+typedef struct {
+	int gpioPinNumber;
+	pinStatus_e initStatus;
+	pinDirection_e direction;
+	int value;
+
+} gpioStruct;
+
+int main(void);
+int initStruct(gpioStruct * gpio);
+int readPin(gpioStruct * gpio);
+int writePin(gpioStruct * gpio) ;
+#endif /* GPIOSTRUCT_H_ */

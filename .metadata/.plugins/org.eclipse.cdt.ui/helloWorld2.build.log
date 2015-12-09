@@ -1,0 +1,6 @@
+11:55:00 **** Incremental Build of configuration Default for project helloWorld2 ****
+make all 
+make: Nothing to be done for `all'.
+
+11:55:00 Build Finished (took 92ms)
+

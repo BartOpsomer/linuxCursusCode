@@ -1,0 +1,32 @@
+#include "helloWorld.h"
+
+int main(void) {
+	printf("hello World new version\n");
+	char inputname[50] = { };
+	if (inputname == fgets(inputname, 50, stdin)) {
+		if('\n' == inputname[strlen(inputname)-1])
+		{
+			inputname[strlen(inputname)-1] = '\0';
+		}
+		printf("inputFileName is <%s>\m", inputname);
+		FILE *fd = fopen((char *) inputname, "r");
+		if (NULL != fd) {
+			char c = 'a';
+			while (EOF != c) {
+				c = fgetc(fd);
+				putchar(c);
+			}
+			printf("success\n");
+		} else {
+			printf("could not open file\n");
+		}
+
+		FILE *fd2 = fopen("/dev/null", "rw");
+		if (NULL != fd) {
+			fputs("hello null", fd2);
+			printf("success\n");
+		}
+	}
+
+	return 0;
+}

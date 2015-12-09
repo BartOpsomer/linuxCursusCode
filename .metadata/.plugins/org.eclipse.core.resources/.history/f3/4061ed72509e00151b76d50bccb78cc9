@@ -1,0 +1,32 @@
+/*
+ * gpioStruct.c
+ *
+ *  Created on: Dec 9, 2015
+ *      Author: student
+ */
+
+#include "gpioStruct.h"
+
+int initStruct(gpioStruct * gpio) {
+	int rc = -1;
+	if (pinStatus_notInitialised == gpio->initStatus) {
+		int gpioExportFile = open("/sys/class/gpio/export",O_WRONLY);
+		if(0 == gpioExportFile)
+		{
+			char stringPtr[3] = {};
+			int resultCode = snprintf(stringPtr,3,"%d",gpio->gpioPinNumber);
+			if( 4 > resultCode)
+			{
+
+			}
+		}
+	}
+
+	return rc;
+}
+
+int main(void) {
+	int rc = -1;
+
+	return rc;
+}

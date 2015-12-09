@@ -1,0 +1,13 @@
+/*
+ * cardgame.c
+ *
+ *  Created on: Dec 9, 2015
+ *      Author: student
+ */
+
+int main(void)
+{
+	int rc = -1;
+
+	return rc;
+}

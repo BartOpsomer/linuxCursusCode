@@ -1,0 +1,14 @@
+
+#include "helloWorld.h"
+
+int main(void)
+{
+printf("hello World new version\n");
+char inputname[50] = {};
+if(inputname == fread(inputname,50,1))
+{
+
+}
+
+return 0;
+}		

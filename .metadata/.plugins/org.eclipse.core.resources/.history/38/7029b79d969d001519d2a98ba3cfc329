@@ -1,0 +1,19 @@
+/*
+ * buttonPush.h
+ *
+ *  Created on: Dec 8, 2015
+ *      Author: student
+ */
+
+#ifndef BUTTONPUSH_H_
+#define BUTTONPUSH_H_
+
+
+#include <stdio.h>
+#include <string.h>
+
+int main(void);
+
+
+
+#endif /* BUTTONPUSH_H_ */

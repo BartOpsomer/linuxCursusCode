@@ -1,0 +1,6 @@
+
+
+all: helloworld
+
+helloworld: helloWorld.c
+	gcc -Wall -Werror -o helloworld ./helloWorld.c

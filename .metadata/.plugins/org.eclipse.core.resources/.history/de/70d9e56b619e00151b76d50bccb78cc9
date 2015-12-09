@@ -1,0 +1,15 @@
+/*
+ * cardgame.c
+ *
+ *  Created on: Dec 9, 2015
+ *      Author: student
+ */
+#include "cardgame.h"
+static card_t cardDeck[52] = {};
+
+int main(void)
+{
+	int rc = -1;
+
+	return rc;
+}

@@ -1,0 +1,13 @@
+/*
+ * buttonPush.c
+ *
+ *  Created on: Dec 8, 2015
+ *      Author: student
+ */
+#include "buttonPush.h"
+
+int main(void) {
+	int rc = -1;
+	int fileDesc = open("/sys/class/gpio/gpio21/value",O_RONLY);
+	return rc;
+}

@@ -1,0 +1,25 @@
+/*
+ * ledLoad.c
+ *
+ *  Created on: Dec 8, 2015
+ *      Author: student
+ */
+
+#include "ledLoad.h"
+
+int main(void) {
+	int rc = -1;
+	int loadFile = open("/proc/loadavg", O_RDONLY);
+	if (-1 != loadFile) {
+		char loadFileData[5] = { };
+		while (1) {
+			size_t resSize = read(loadFile, &loadFileData, (size_t) 4);
+			if (4 == resSize) {
+				loadFileData[4] = '\0';
+				float load = atof(loadFileData);
+			}
+		}
+	}
+	return rc;
+}
+

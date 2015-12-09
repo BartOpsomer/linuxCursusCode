@@ -1,0 +1,44 @@
+/*
+ * cardgame.c
+ *
+ *  Created on: Dec 9, 2015
+ *      Author: student
+ */
+#include "cardgame.h"
+#define PICK_COLOUR
+static card_t s_cardDeck[52] = { };
+
+void initCardDeck(void) {
+	for (int i = 0; i < 52; i++) {
+		card_t card = { };
+		card.cardColour = (i % colour_size) + 1;
+		card.cardNumber = (i % number_size) + 1;
+		s_cardDeck[i] = card;
+	}
+}
+
+int main(void) {
+	int rc = 0;
+	initCardDeck();
+
+	time_t t;
+	/* Intializes random number generator */
+	srand((unsigned) time(&t));
+
+	int randNumber = (rand() % 52);
+	for (int i = 0; i < 10; i++) {
+		card_t card = {};
+#ifdef PICK_COLOUR
+
+#else
+
+		int randNumber = (rand() % 52);
+		card = s_cardDeck[randNumber];
+
+
+#endif
+		printf("card is : colour:%d number:%d\n", card.cardColour,
+						card.cardNumber);
+	}
+	return rc;
+}

@@ -1,0 +1,30 @@
+/*
+ * buttonPush.c
+ *
+ *  Created on: Dec 8, 2015
+ *      Author: student
+ */
+#include "buttonPush.h"
+
+int main(void) {
+	int rc = -1;
+	int fileDesc = open("/sys/class/gpio/gpio21/value",O_RDONLY);
+
+	if(0 > fileDesc)
+	{
+		rc = 1;
+		return rc;
+	}
+	char value[1] = {};
+	int sleepTime = 150000;
+
+	while(1)
+	{
+		usleep(sleepTime);
+		if(0 > read(fileDesc,value,1))
+		{
+			write(2,"an error ocurred\n",30);
+		}
+	}
+	return rc;
+}

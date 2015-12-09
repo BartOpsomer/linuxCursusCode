@@ -1,0 +1,10 @@
+/*
+ * ledLoad.c
+ *
+ *  Created on: Dec 8, 2015
+ *      Author: student
+ */
+
+#include "ledLoad.h"
+
+FILE * loadFile = open("/proc/loadavg",O_RDONLY);

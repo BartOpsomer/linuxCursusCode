@@ -1,0 +1,19 @@
+
+#include "helloWorld.h"
+
+int main(void)
+{
+printf("hello World new version\n");
+char inputname[50] = {};
+if(inputname == fgets(inputname,50,stdin))
+{
+	FILE *fd =fopen("/dev/null","rw");
+	if(NULL != fd)
+	{
+	fputs("hello null",fd);
+	printf("success\n");
+	}
+}
+
+return 0;
+}		

@@ -1,0 +1,21 @@
+/*
+ * cardgame.h
+ *
+ *  Created on: Dec 9, 2015
+ *      Author: student
+ */
+
+#ifndef CARDGAME_H_
+#define CARDGAME_H_
+
+#include <stdio.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <string.h>
+#include <errno.h>
+
+
+
+#endif /* CARDGAME_H_ */

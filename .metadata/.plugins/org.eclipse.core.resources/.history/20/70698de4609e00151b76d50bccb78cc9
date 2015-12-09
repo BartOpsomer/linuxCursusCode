@@ -1,0 +1,25 @@
+/*
+ * cardgame.h
+ *
+ *  Created on: Dec 9, 2015
+ *      Author: student
+ */
+
+#ifndef CARDGAME_H_
+#define CARDGAME_H_
+
+#include <stdio.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <string.h>
+#include <errno.h>
+typedef enum {coulour_unknown = 0, colour_spades = 1,colour_clubs = 2,colour_hearts = 3,colour_diamonds = 4} cardColour_e;
+typedef enum {} cardNumber_e;
+
+typedef struct {}card_t;
+
+
+
+#endif /* CARDGAME_H_ */

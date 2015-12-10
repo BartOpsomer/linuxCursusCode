@@ -1,0 +1,3 @@
+[submodule "suppliedCode"]
+	path = suppliedCode
+	url = git://github.com/jnuyens/linux-c-programming.git

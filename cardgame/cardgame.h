@@ -16,13 +16,16 @@
 #include <string.h>
 #include <errno.h>
 #include <time.h>
-typedef enum {coulour_unknown = 0,
+typedef enum {
+	coulour_unknown = 0,
 	colour_spades = 1,
 	colour_clubs = 2,
 	colour_hearts = 3,
 	colour_diamonds = 4,
-	colour_size=5} cardColour_e;
-typedef enum {number_unkown = 0,
+	colour_size = 5
+} cardColour_e;
+typedef enum {
+	number_unkown = 0,
 	number_ace,
 	number_2,
 	number_3,
@@ -38,9 +41,19 @@ typedef enum {number_unkown = 0,
 	number_size
 } cardNumber_e;
 
-typedef struct {cardNumber_e cardNumber;
-				cardColour_e cardColour;}card_t;
+typedef struct {
+	cardNumber_e cardNumber;
+	cardColour_e cardColour;
+} card_t;
+typedef struct _listnode {
+	card_t card;
+	struct _listnode * next;
+	struct _listnode * prev;
+} linkedListNode_t;
 
-
+void initCardDeck(void) ;
+int listAppend(linkedListNode_t * list, card_t * card);
+int listSize(linkedListNode_t * list);\
+int main(int argc, char * argv[]);
 
 #endif /* CARDGAME_H_ */

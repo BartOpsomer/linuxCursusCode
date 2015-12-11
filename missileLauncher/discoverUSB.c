@@ -69,11 +69,13 @@ int discoverUSB(void) {
 
 			printf("%s/%s %04X/%04X\n", bus->dirname, dev->filename,
 					dev->descriptor.idVendor, dev->descriptor.idProduct);
+			//if(strcmp(bus->dirname,"002") && strcmp(dev->filename,"006"))
 			if( dev->descriptor.idVendor==0x2123 && dev->descriptor.idProduct == 0x1010)
 			{
 				setDevice(dev);
 				//002/006        2123/1010
 			}
+
 
 			udev = usb_open(dev);
 			if (udev) {

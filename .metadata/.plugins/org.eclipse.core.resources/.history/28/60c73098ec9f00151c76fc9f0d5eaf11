@@ -1,0 +1,65 @@
+/*
+ * missileLauncher.c
+ *
+ *  Created on: Dec 10, 2015
+ *      Author: student
+ */
+#include "missilleLauncher.h"
+
+int testSendData(void) {
+	usb_dev_handle *dev_handle; //a device handle
+	usb_device *dev = NULL; //a libusb session
+	dev_handle = usb_open(dev);
+	//dev_handle = libusb_open_device_with_vid_pid(ctx, 5118, 7424); //these are vendorID and productID I found for my usb device
+	if (dev_handle == NULL)
+		printf("Cannot open device \n");
+	else
+		printf("Device Opened \n");
+
+	unsigned char data[5] = { }; //data to write
+	data[0] = 'a';
+	data[1] = 'b';
+	data[2] = 'c';
+	data[3] = 'd';
+	data[4] = '\n'; //some dummy values
+
+	int actual; //used to find out how many bytes were written
+	if (libusb_kernel_driver_active(dev_handle, 0) == 1) { //find out if kernel driver is attached
+		printf("Kernel Driver Active \n");
+		if (libusb_detach_kernel_driver(dev_handle, 0) == 0) //detach it
+			printf("Kernel Driver Detached! \n");
+	}
+	int r = libusb_claim_interface(dev_handle, 0); //claim interface 0 (the first) of device (mine had jsut 1)
+	if (r < 0) {
+		printf("Cannot Claim Interface \n");
+		return 1;
+	}
+	printf("Claimed Interface \n");
+
+	printf("Data-> %s \n", data); //just to see the data we want to write : abcd
+	printf("Writing Data... \n");
+	r = libusb_bulk_transfer(dev_handle, (2 | LIBUSB_ENDPOINT_OUT), data, 4,
+			&actual, 0); //my device's out endpoint was 2, found with trial- the device had 2 endpoints: 2 and 129
+	if (r == 0 && actual == 4) //we wrote the 4 bytes successfully
+		printf("Writing Successful! \n");
+	else
+		printf("Write Error \n");
+
+	r = libusb_release_interface(dev_handle, 0); //release the claimed interface
+	if (r != 0) {
+		printf("Cannot Release Interface \n");
+		return 1;
+	}
+	printf("Released Interface \n");
+
+	libusb_close(dev_handle); //close the device we opened
+	libusb_exit(ctx); //needs to be called to end the
+
+
+	return 0;
+}
+int main(void) {
+	testSendData();
+	discoverUSB();
+	return 0;
+}

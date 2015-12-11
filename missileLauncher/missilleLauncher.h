@@ -12,6 +12,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <usb.h>
+#include <string.h>
+#include <errno.h>
 
 
 /* the missile launcher:

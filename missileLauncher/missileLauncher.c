@@ -15,7 +15,7 @@ void setDevice(struct usb_device * dev) {
 int testSendData(void) {
 	usb_dev_handle *dev_handle; //a device handle
 	struct usb_device * deviceOfUsb = &s_missileLauncher; //a libusb session
-
+	printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n------------------------------------\n");
 	dev_handle = usb_open(deviceOfUsb);
 	if (dev_handle == NULL)
 		printf("Cannot open device \n");
@@ -34,6 +34,8 @@ int testSendData(void) {
 	int r = usb_claim_interface(dev_handle, 0); //claim interface 0 (the first) of device (mine had jsut 1)
 	if (r < 0) {
 		printf("Cannot Claim Interface \n");
+		printf("%s\n",strerror(errno));
+		usb_close(dev_handle);
 		return 1;
 	}
 	printf("Claimed Interface \n");
@@ -50,6 +52,7 @@ int testSendData(void) {
 	r = usb_release_interface(dev_handle, 0); //release the claimed interface
 	if (r != 0) {
 		printf("Cannot Release Interface \n");
+		usb_close(dev_handle);
 		return 1;
 	}
 	printf("Released Interface \n");

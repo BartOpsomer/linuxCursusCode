@@ -1,0 +1,11 @@
+/*
+ * missileLauncher.c
+ *
+ *  Created on: Dec 10, 2015
+ *      Author: student
+ */
+#include "missilleLauncher.h"
+int main(void)
+{
+	return discoverUSB();
+}

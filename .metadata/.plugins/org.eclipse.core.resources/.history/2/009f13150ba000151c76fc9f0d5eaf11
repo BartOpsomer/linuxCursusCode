@@ -22,12 +22,13 @@ int testSendData(void) {
 	else
 		printf("Device Opened \n");
 
-	unsigned char data[] = {0x02,0x08,0x00,0x00,0x00,0x00,0x00,0x00 }; //data to write
+	unsigned char data[] = {0x02,0x02,0x00,0x00,0x00,0x00,0x00,0x00 }; //data to write
+
 
 	int actual; //used to find out how many bytes were written
 	char name[200];
-	size_t size = 200;
-	if (usb_get_driver_np(dev_handle, 0, name, size) == 0) { //find out if kernel driver is attached
+	size_t size =200;
+	if (usb_get_driver_np(dev_handle, 0,name,size) == 0) { //find out if kernel driver is attached
 		printf("Kernel Driver Active \n");
 		if (usb_detach_kernel_driver_np(dev_handle, 0) == 0) //detach it
 			printf("Kernel Driver Detached! \n");
@@ -36,7 +37,7 @@ int testSendData(void) {
 	int r = usb_claim_interface(dev_handle, 0); //claim interface 0 (the first) of device (mine had jsut 1)
 	if (r < 0) {
 		printf("Cannot Claim Interface \n");
-		printf("%s\n", strerror(errno));
+		printf("%s\n",strerror(errno));
 		usb_close(dev_handle);
 		return 1;
 	}
@@ -45,14 +46,12 @@ int testSendData(void) {
 	//printf("Data-> %s \n", data); //just to see the data we want to write : abcd
 	printf("Writing Data... \n");
 	//0x21,0x09,0,0,[0x02,0x02,0x00,0x00,0x00,0x00,0x00,0x00]);
-	r = 1;
-	for (int i = 0; i < 100 && r > 0; i++) {
-		r = usb_control_msg(dev_handle, 0x21, 0x09, 0, 0, data, 8, 5000); //my device's out endpoint was 2, found with trial- the device had 2 endpoints: 2 and 129
-		if (r > 0) //we wrote the 4 bytes successfully
-			printf("Writing Successful! \n");
-		else
-			printf("Write Error \n");
-	}
+	r = usb_control_msg(dev_handle, 0x21, 0x09, 0, 0, data, 5, 5); //my device's out endpoint was 2, found with trial- the device had 2 endpoints: 2 and 129
+	if (r == 0) //we wrote the 4 bytes successfully
+		printf("Writing Successful! \n");
+	else
+		printf("Write Error \n");
+
 	r = usb_release_interface(dev_handle, 0); //release the claimed interface
 	if (r != 0) {
 		printf("Cannot Release Interface \n");

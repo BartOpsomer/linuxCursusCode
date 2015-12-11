@@ -1,0 +1,30 @@
+/*
+ * testRandom.c
+ *
+ *  Created on: Dec 10, 2015
+ *      Author: student
+ */
+#include "testRandom.h"
+
+int main(void)
+{
+	int rc = 0;
+
+	struct timeval time;
+	/* Intializes random number generator */
+	gettimeofday(&time, NULL);
+	srand(time.tv_sec*250 + 42*time.tv_usec);
+	int randNumber = (rand() % 100);
+	const int sizeOfHist = 100;
+
+	int hist[sizeOfHist] = {};
+	memset(hist,0,sizeOfHist*sizeof(int));
+
+	for(int i = 0;i < 100000; i++)
+	{
+		int randNumber = (rand() % sizeOfHist);
+		hist[randNumber] = hist[randNumber]+1;
+	}
+
+	return rc;
+}

@@ -1,0 +1,69 @@
+/*
+ * testRandom.c
+ *
+ *  Created on: Dec 10, 2015
+ *      Author: student
+ */
+#include "testRandom.h"
+
+#define sizeOfHist 100
+#define SYS_getrandom
+
+float standard_deviation(int data[], int n) {
+	float mean = 0.0, sum_deviation = 0.0;
+	int i;
+	for (i = 0; i < n; ++i) {
+		mean += (double) data[i];
+	}
+	mean = mean / n;
+	for (i = 0; i < n; ++i)
+		sum_deviation += ((double) data[i] - mean) * ((double) data[i] - mean);
+	float stdDev = sqrt(sum_deviation / n);
+	printf("the standard dev / mean is %f\n", stdDev / mean);
+	printf("the mean is %f\n", mean);
+	return stdDev;
+}
+
+int main(void) {
+	int rc = 0;
+
+	struct timeval time;
+	/* Intializes random number generator */
+	gettimeofday(&time, NULL);
+	srand(time.tv_sec * 250 + 42 * time.tv_usec);
+	int randNumber = (rand() % 100);
+
+	int hist[sizeOfHist] = { };
+	memset(hist, 0, sizeOfHist * sizeof(int));
+	int numberOfIteration = (int) pow((double) 10, 2);
+
+	int randomData = open("/dev/urandom", O_RDONLY);
+	if (-1 == randomData) {
+		printf("%s\n", strerror(errno));
+		printf("open random did not work\n");
+		return -1;
+	}
+
+	for (int i = 0; i < numberOfIteration; i++) {
+		//int randNumber = (rand() % sizeOfHist);
+		int randNumber = 0;
+		if (-1 == read(randomData, &randNumber, sizeof(int))) {
+			printf("%s\n", strerror(errno));
+			return -1;
+		}
+		randNumber = randNumber % sizeOfHist;
+		hist[randNumber] = hist[randNumber] + 1;
+	}
+	close(randomData);
+	for (int i = 0; i < (sizeOfHist / 10); i++) {
+		printf("for i=%d: ", i);
+		for (int j = 0; j < 10; j++) {
+			double frac = ((double) hist[1 * 10 + j] / numberOfIteration);
+			printf("  %f", frac);
+		}
+		printf("\n");
+	}
+
+	standard_deviation(hist, sizeOfHist);
+	return rc;
+}

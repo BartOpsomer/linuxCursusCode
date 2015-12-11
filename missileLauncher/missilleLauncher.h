@@ -15,7 +15,8 @@
 
 
 /* the missile launcher:
- *002/006 2123/1010
+ "bus/device idVendor/idProduct
+  002/006        2123/1010
 - Unable to fetch manufacturer string
 - Unable to fetch product string
  wTotalLength: 34
@@ -40,6 +41,9 @@
  *
  *
  */
+
+int discoverUSB(void);
+void setDevice(struct usb_device * dev);
 
 
 #endif /* MISSILLELAUNCHER_H_ */

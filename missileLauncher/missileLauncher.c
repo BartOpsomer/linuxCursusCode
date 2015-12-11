@@ -6,117 +6,60 @@
  */
 #include "missilleLauncher.h"
 
-void print_endpoint(struct usb_endpoint_descriptor *endpoint)
-{
-printf(" bEndpointAddress: %02xh\n", endpoint->bEndpointAddress);
-printf(" bmAttributes: %02xh\n", endpoint->bmAttributes);
-printf(" wMaxPacketSize: %d\n", endpoint->wMaxPacketSize);
-printf(" bInterval: %d\n", endpoint->bInterval);
-printf(" bRefresh: %d\n", endpoint->bRefresh);
-printf(" bSynchAddress: %d\n", endpoint->bSynchAddress);
+static struct usb_device s_missileLauncher = { };
+
+void setDevice(struct usb_device * dev) {
+	s_missileLauncher = *dev;
 }
 
+int testSendData(void) {
+	usb_dev_handle *dev_handle; //a device handle
+	struct usb_device * deviceOfUsb = &s_missileLauncher; //a libusb session
 
-void print_altsetting(struct usb_interface_descriptor *interface)
-{
-int i;
+	dev_handle = usb_open(deviceOfUsb);
+	if (dev_handle == NULL)
+		printf("Cannot open device \n");
+	else
+		printf("Device Opened \n");
 
-printf(" bInterfaceNumber: %d\n", interface->bInterfaceNumber);
-printf(" bAlternateSetting: %d\n", interface->bAlternateSetting);
-printf(" bNumEndpoints: %d\n", interface->bNumEndpoints);
-printf(" bInterfaceClass: %d\n", interface->bInterfaceClass);
-printf(" bInterfaceSubClass: %d\n", interface->bInterfaceSubClass);
-printf(" bInterfaceProtocol: %d\n", interface->bInterfaceProtocol);
-printf(" iInterface: %d\n", interface->iInterface);
+	unsigned char data[] = {0x02,0x02,0x00,0x00,0x00,0x00,0x00,0x00 }; //data to write
 
-for (i = 0; i < interface->bNumEndpoints; i++)
-print_endpoint(&interface->endpoint[i]);
+
+	int actual; //used to find out how many bytes were written
+//	if (libusb_kernel_driver_active(dev_handle, 0) == 1) { //find out if kernel driver is attached
+//		printf("Kernel Driver Active \n");
+//		if (libusb_detach_kernel_driver(dev_handle, 0) == 0) //detach it
+//			printf("Kernel Driver Detached! \n");
+//	}
+	int r = usb_claim_interface(dev_handle, 0); //claim interface 0 (the first) of device (mine had jsut 1)
+	if (r < 0) {
+		printf("Cannot Claim Interface \n");
+		return 1;
+	}
+	printf("Claimed Interface \n");
+
+	//printf("Data-> %s \n", data); //just to see the data we want to write : abcd
+	printf("Writing Data... \n");
+	//0x21,0x09,0,0,[0x02,0x02,0x00,0x00,0x00,0x00,0x00,0x00]);
+	r = usb_control_msg(dev_handle, 0x21, 0x09, 0, 0, data, sizeof(data), 5); //my device's out endpoint was 2, found with trial- the device had 2 endpoints: 2 and 129
+	if (r == 0) //we wrote the 4 bytes successfully
+		printf("Writing Successful! \n");
+	else
+		printf("Write Error \n");
+
+	r = usb_release_interface(dev_handle, 0); //release the claimed interface
+	if (r != 0) {
+		printf("Cannot Release Interface \n");
+		return 1;
+	}
+	printf("Released Interface \n");
+
+	usb_close(dev_handle); //close the device we opened
+
+	return 0;
 }
-
-
-void print_interface(struct usb_interface *interface)
-{
-int i;
-
-for (i = 0; i < interface->num_altsetting; i++)
-print_altsetting(&interface->altsetting[i]);
-}
-
-
-void print_configuration(struct usb_config_descriptor *config)
-{
-int i;
-
-printf(" wTotalLength: %d\n", config->wTotalLength);
-printf(" bNumInterfaces: %d\n", config->bNumInterfaces);
-printf(" bConfigurationValue: %d\n", config->bConfigurationValue);
-printf(" iConfiguration: %d\n", config->iConfiguration);
-printf(" bmAttributes: %02xh\n", config->bmAttributes);
-printf(" MaxPower: %d\n", config->MaxPower);
-
-for (i = 0; i < config->bNumInterfaces; i++)
-print_interface(&config->interface[i]);
-}
-
-
-int main(void)
-{
-struct usb_bus *bus;
-struct usb_device *dev;
-
-usb_init();
-usb_find_busses();
-usb_find_devices();
-
-printf("bus/device idVendor/idProduct\n");
-
-for (bus = usb_busses; bus; bus = bus->next) {
-for (dev = bus->devices; dev; dev = dev->next) {
-int ret, i;
-char string[256];
-usb_dev_handle *udev;
-
-printf("%s/%s %04X/%04X\n", bus->dirname, dev->filename,
-dev->descriptor.idVendor, dev->descriptor.idProduct);
-
-udev = usb_open(dev);
-if (udev) {
-if (dev->descriptor.iManufacturer) {
-ret = usb_get_string_simple(udev, dev->descriptor.iManufacturer, string, sizeof(string));
-if (ret > 0)
-printf("- Manufacturer : %s\n", string);
-else
-printf("- Unable to fetch manufacturer string\n");
-}
-
-if (dev->descriptor.iProduct) {
-ret = usb_get_string_simple(udev, dev->descriptor.iProduct, string, sizeof(string));
-if (ret > 0)
-printf("- Product : %s\n", string);
-else
-printf("- Unable to fetch product string\n");
-}
-
-if (dev->descriptor.iSerialNumber) {
-ret = usb_get_string_simple(udev, dev->descriptor.iSerialNumber, string, sizeof(string));
-if (ret > 0)
-printf("- Serial Number: %s\n", string);
-else
-printf("- Unable to fetch serial number string\n");
-}
-
-usb_close (udev);
-}
-
-if (!dev->config) {
-printf(" Couldn't retrieve descriptors\n");
-continue;
-}
-
-for (i = 0; i < dev->descriptor.bNumConfigurations; i++)
-print_configuration(&dev->config[i]);
-}
-}
-
-return 0;
+int main(void) {
+	discoverUSB();
+	testSendData();
+	return 0;
 }

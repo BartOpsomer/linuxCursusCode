@@ -7,24 +7,24 @@
 #include "missilleLauncher.h"
 
 void print_endpoint(struct usb_endpoint_descriptor *endpoint) {
-	printf(" bEndpointAddress: %02xh\n", endpoint->bEndpointAddress);
-	printf(" bmAttributes: %02xh\n", endpoint->bmAttributes);
-	printf(" wMaxPacketSize: %d\n", endpoint->wMaxPacketSize);
-	printf(" bInterval: %d\n", endpoint->bInterval);
-	printf(" bRefresh: %d\n", endpoint->bRefresh);
-	printf(" bSynchAddress: %d\n", endpoint->bSynchAddress);
+/*	printf(" bEndpointAddress: %02xh\n", endpoint->bEndpointAddress);*/
+/*	printf(" bmAttributes: %02xh\n", endpoint->bmAttributes);*/
+/*	printf(" wMaxPacketSize: %d\n", endpoint->wMaxPacketSize);*/
+/*	printf(" bInterval: %d\n", endpoint->bInterval);*/
+/*	printf(" bRefresh: %d\n", endpoint->bRefresh);*/
+/*	printf(" bSynchAddress: %d\n", endpoint->bSynchAddress);*/
 }
 
 void print_altsetting(struct usb_interface_descriptor *interface) {
 	int i;
 
-	printf(" bInterfaceNumber: %d\n", interface->bInterfaceNumber);
-	printf(" bAlternateSetting: %d\n", interface->bAlternateSetting);
-	printf(" bNumEndpoints: %d\n", interface->bNumEndpoints);
-	printf(" bInterfaceClass: %d\n", interface->bInterfaceClass);
-	printf(" bInterfaceSubClass: %d\n", interface->bInterfaceSubClass);
-	printf(" bInterfaceProtocol: %d\n", interface->bInterfaceProtocol);
-	printf(" iInterface: %d\n", interface->iInterface);
+/*	printf(" bInterfaceNumber: %d\n", interface->bInterfaceNumber);*/
+/*	printf(" bAlternateSetting: %d\n", interface->bAlternateSetting);*/
+/*	printf(" bNumEndpoints: %d\n", interface->bNumEndpoints);*/
+/*	printf(" bInterfaceClass: %d\n", interface->bInterfaceClass);*/
+/*	printf(" bInterfaceSubClass: %d\n", interface->bInterfaceSubClass);*/
+/*	printf(" bInterfaceProtocol: %d\n", interface->bInterfaceProtocol);*/
+/*	printf(" iInterface: %d\n", interface->iInterface);*/
 
 	for (i = 0; i < interface->bNumEndpoints; i++)
 		print_endpoint(&interface->endpoint[i]);
@@ -40,12 +40,12 @@ void print_interface(struct usb_interface *interface) {
 void print_configuration(struct usb_config_descriptor *config) {
 	int i;
 
-	printf(" wTotalLength: %d\n", config->wTotalLength);
-	printf(" bNumInterfaces: %d\n", config->bNumInterfaces);
-	printf(" bConfigurationValue: %d\n", config->bConfigurationValue);
-	printf(" iConfiguration: %d\n", config->iConfiguration);
-	printf(" bmAttributes: %02xh\n", config->bmAttributes);
-	printf(" MaxPower: %d\n", config->MaxPower);
+/*	printf(" wTotalLength: %d\n", config->wTotalLength);*/
+/*	printf(" bNumInterfaces: %d\n", config->bNumInterfaces);*/
+/*	printf(" bConfigurationValue: %d\n", config->bConfigurationValue);*/
+/*	printf(" iConfiguration: %d\n", config->iConfiguration);*/
+/*	printf(" bmAttributes: %02xh\n", config->bmAttributes);*/
+/*	printf(" MaxPower: %d\n", config->MaxPower);*/
 
 	for (i = 0; i < config->bNumInterfaces; i++)
 		print_interface(&config->interface[i]);
@@ -67,8 +67,8 @@ int discoverUSB(void) {
 			char string[256];
 			usb_dev_handle *udev;
 
-			printf("%s/%s %04X/%04X\n", bus->dirname, dev->filename,
-					dev->descriptor.idVendor, dev->descriptor.idProduct);
+/*			printf("%s/%s %04X/%04X\n", bus->dirname, dev->filename,*/
+/*					dev->descriptor.idVendor, dev->descriptor.idProduct);*/
 			//if(strcmp(bus->dirname,"002") && strcmp(dev->filename,"006"))
 			if( dev->descriptor.idVendor==0x2123 && dev->descriptor.idProduct == 0x1010)
 			{
@@ -83,29 +83,29 @@ int discoverUSB(void) {
 					ret = usb_get_string_simple(udev,
 							dev->descriptor.iManufacturer, string,
 							sizeof(string));
-					if (ret > 0)
-						printf("- Manufacturer : %s\n", string);
-					else
-						printf("- Unable to fetch manufacturer string\n");
+/*					if (ret > 0)*/
+/*						printf("- Manufacturer : %s\n", string);*/
+/*					else*/
+/*						printf("- Unable to fetch manufacturer string\n");*/
 				}
 
 				if (dev->descriptor.iProduct) {
 					ret = usb_get_string_simple(udev, dev->descriptor.iProduct,
 							string, sizeof(string));
-					if (ret > 0)
-						printf("- Product : %s\n", string);
-					else
-						printf("- Unable to fetch product string\n");
+/*					if (ret > 0)*/
+/*						printf("- Product : %s\n", string);*/
+/*					else*/
+/*						printf("- Unable to fetch product string\n");*/
 				}
 
 				if (dev->descriptor.iSerialNumber) {
 					ret = usb_get_string_simple(udev,
 							dev->descriptor.iSerialNumber, string,
 							sizeof(string));
-					if (ret > 0)
-						printf("- Serial Number: %s\n", string);
-					else
-						printf("- Unable to fetch serial number string\n");
+/*					if (ret > 0)*/
+/*						printf("- Serial Number: %s\n", string);*/
+/*					else*/
+/*						printf("- Unable to fetch serial number string\n");*/
 				}
 
 				usb_close(udev);

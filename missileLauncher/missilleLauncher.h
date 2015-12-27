@@ -48,6 +48,8 @@ typedef enum {action_unkown =0,action_left,action_right,action_up,action_down,ac
 
 int discoverUSB(void);
 void setDevice(struct usb_device * dev);
+void detectArrow(void);
+void resetDetectArrow(void);
 
 
 #endif /* MISSILLELAUNCHER_H_ */

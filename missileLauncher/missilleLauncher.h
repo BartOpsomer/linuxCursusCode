@@ -14,6 +14,7 @@
 #include <usb.h>
 #include <string.h>
 #include <errno.h>
+#include <signal.h>
 
 
 /* the missile launcher:
@@ -44,12 +45,14 @@
  *
  */
 
-typedef enum {action_unkown =0,action_left,action_right,action_up,action_down,action_stop,actoin_fire }action_e;
+typedef enum {action_unkown =0,action_left,action_right,action_up,action_down,action_stop,action_fire }action_e;
+typedef enum {keyboard_unknown,keyboard_arrow_up,keyboard_arrow_down,keyboard_arrow_right,keyboard_arrow_left,keyboard_enter}keyboard_e;
 
 int discoverUSB(void);
 void setDevice(struct usb_device * dev);
-void detectArrow(void);
+keyboard_e detectArrow(void);
 void resetDetectArrow(void);
+action_e convertKeyboardToAction(keyboard_e key);
 
 
 #endif /* MISSILLELAUNCHER_H_ */
